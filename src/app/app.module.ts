@@ -13,6 +13,9 @@ import { MatTableModule } from '@angular/material/table';
 import { HttpClientModule } from '@angular/common/http';
 import { PassengersDetailsComponent } from './modules/passengers/passengers-details/passengers-details.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -31,6 +34,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatTableModule,
     MatPaginatorModule,
     HttpClientModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSortModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Passenger } from '../models/titanic-model';
 
@@ -14,9 +14,9 @@ export class TitanicService {
   getPassengers(): Observable<Passenger[]> {
     return this.http
       .get<Passenger[]>(`${this.baseUrl}/passengers`)
-      .pipe((passengers) => {
+      .pipe(map((passengers) => {
         return passengers;
-      });
+      }));
   }
 
   getPassenger(id: number): Observable<Passenger[]> {

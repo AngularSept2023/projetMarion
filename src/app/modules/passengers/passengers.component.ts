@@ -6,11 +6,12 @@ import {
   ViewChild,
 } from '@angular/core';
 import { PassengersService } from './passengers.service';
-import { MatSort, Sort } from '@angular/material/sort';
-import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { MatSort } from '@angular/material/sort';
 import { Passenger } from 'src/app/models/titanic-model';
-import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { TitanicService } from '../titanic.service';
+import { Observable } from 'rxjs';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-passengers',
@@ -19,54 +20,38 @@ import { MatPaginator } from '@angular/material/paginator';
   providers: [{ provide: PassengersService, useClass: PassengersService }],
 })
 export class PassengersComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
+  @ViewChild(MatSort, { static: false }) sort!: MatSort;
   displayedColumns = ['Nom', 'Sexe', 'Âge', 'Survivant'];
   sortedData!: Passenger[];
+  passengers!: Passenger[];
   passengersTab!: MatTableDataSource<Passenger>;
+  isInit = false;
 
-  constructor(
-    public passengersService: PassengersService,
-    private _liveAnnouncer: LiveAnnouncer
-  ) {}
+  constructor(public titanicService: TitanicService) {
+    this.titanicService.getPassengers().subscribe((passengers) => {
+      this.passengersTab = new MatTableDataSource(passengers);
+      console.log(this.passengersTab.data);
+    });
+  }
 
   ngOnInit(): void {
-    this.passengersService.getPassengers();
-    this.passengersTab = new MatTableDataSource(
-      this.passengersService.passengers
-    );
-    this.sortedData = this.passengersService.passengers;
+    this.isInit = true;
   }
+
   ngAfterViewInit() {
-    this.passengersTab.paginator = this.paginator;
-    this.passengersTab.sort = this.sort;
+    if (this.passengersTab.data.length) {
+      console.log(this.passengersTab.data);
+      this.passengersTab.paginator = this.paginator;
+      this.passengersTab.sort = this.sort;
+    }
   }
 
-  sortData(sort: Sort) {
-    const data = this.passengersService.passengers;
-    if (!sort.active || sort.direction === '') {
-      this.sortedData = data;
-      return;
-    }
-
-    this.sortedData = data.sort((a, b) => {
-      const isAsc = sort.direction === 'asc';
-      switch (sort.active) {
-        case 'name':
-          return compare(a.Name, b.Name, isAsc);
-        case 'age':
-          return compare(a.Age, b.Age, isAsc);
-        case 'sex':
-          return compare(a.Sex, b.Sex, isAsc);
-        case 'survived':
-          return compare(a.Survived, b.Survived, isAsc);
-        default:
-          return 0;
-      }
-    });
-
-    function compare(a: number | string, b: number | string, isAsc: boolean) {
-      return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.passengersTab.filter = filterValue.trim().toLowerCase();
+    if (this.passengersTab.paginator) {
+      this.passengersTab.paginator.firstPage();
     }
   }
 
