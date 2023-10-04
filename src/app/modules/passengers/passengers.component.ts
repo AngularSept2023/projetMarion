@@ -1,5 +1,8 @@
 import {
+  AfterContentInit,
+  AfterViewChecked,
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   OnDestroy,
   OnInit,
@@ -10,8 +13,8 @@ import { MatSort } from '@angular/material/sort';
 import { Passenger } from 'src/app/models/titanic-model';
 import { MatPaginator } from '@angular/material/paginator';
 import { TitanicService } from '../titanic.service';
-import { Observable } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
+import { Observable, tap } from 'rxjs';
 
 @Component({
   selector: 'app-passengers',
@@ -19,40 +22,35 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrls: ['./passengers.component.scss'],
   providers: [{ provide: PassengersService, useClass: PassengersService }],
 })
-export class PassengersComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PassengersComponent
+  implements OnInit, AfterViewInit, AfterViewChecked, OnDestroy
+{
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
-  @ViewChild(MatSort, { static: false }) sort!: MatSort;
   displayedColumns = ['Nom', 'Sexe', 'Âge', 'Survivant'];
   sortedData!: Passenger[];
   passengers!: Passenger[];
   passengersTab!: MatTableDataSource<Passenger>;
-  isInit = false;
 
-  constructor(public titanicService: TitanicService) {
+  constructor(
+    public titanicService: TitanicService,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {
     this.titanicService.getPassengers().subscribe((passengers) => {
       this.passengersTab = new MatTableDataSource(passengers);
-      console.log(this.passengersTab.data);
+      this.passengers = passengers;
     });
   }
 
-  ngOnInit(): void {
-    this.isInit = true;
-  }
+  ngOnInit(): void {}
 
   ngAfterViewInit() {
-    if (this.passengersTab.data.length) {
-      console.log(this.passengersTab.data);
-      this.passengersTab.paginator = this.paginator;
-      this.passengersTab.sort = this.sort;
-    }
+    console.log(this.passengersTab?.data);
+    this.passengersTab = new MatTableDataSource(this.passengers);
+    this.passengersTab.paginator = this.paginator;
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.passengersTab.filter = filterValue.trim().toLowerCase();
-    if (this.passengersTab.paginator) {
-      this.passengersTab.paginator.firstPage();
-    }
+  ngAfterViewChecked(): void {
+    this.changeDetectorRef.detectChanges();
   }
 
   ngOnDestroy(): void {}

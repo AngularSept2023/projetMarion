@@ -1,0 +1,54 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+header {
+  /* padding: 7rem 0 0 0; */
+  
+  text-align: center;
+  
+}
+
+.relative {
+    height: 16rem;
+    position: relative;
+}
+
+.headimg {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: url("../assets/images/RMS_Titanic_3.jpg") no-repeat center;
+  background-size: cover;
+  height: 16rem;
+  width: auto;
+  z-index: 0;
+}
+
+.headbackcolor {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgb(32, 32, 114, 0.4);
+  height: 16rem;
+  width: auto;
+  z-index: 1;
+}
+
+h1 {
+  font-size: 2.4rem;
+  font-weight: bold;
+  color: white;
+  position: absolute;
+  margin: 10rem 30rem;
+  z-index: 1;
+}
+
+mat-toolbar a {
+  margin: 0 1rem;
+}

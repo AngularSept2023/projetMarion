@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Passenger } from 'src/app/models/titanic-model';
 import { BehaviorSubject, Subscription, tap, map, Observable } from 'rxjs';
 import { TitanicService } from '../titanic.service';
-import { MatTableDataSource } from '@angular/material/table';
 
 @Injectable()
 export class PassengersService {
@@ -19,7 +18,7 @@ export class PassengersService {
     this.passengersSub = this.titanicService
       .getPassengers()
       .subscribe((passengers) => {
-        console.log(passengers)
+        console.log(passengers);
         this.passengers = passengers;
         // this.passengersTab = new MatTableDataSource(passengers);
       });

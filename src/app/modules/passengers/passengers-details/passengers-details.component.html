@@ -1,3 +1,21 @@
 <ng-container *ngIf="passenger$ | async as passenger">
-  <h2>Passager : {{ passenger.PassengerId }} - {{ passenger.Name }}</h2>
+  <div class="passengerInfos">
+    <h2>Passager : {{ passenger.PassengerId }} - {{ passenger.Name }}</h2>
+    <p>Âge : {{ passenger.Age ? passenger.Age + " ans" : "Âge inconnu" }}</p>
+    <p>Sexe : {{ passenger.Sex }}</p>
+    <p>Survivant : {{ passenger.Survived === "1" ? "Oui" : "Non" }}</p>
+    <div class="passengerInfosDetails">
+      <p>Classe : {{ passenger.Pclass ? passenger.Pclass : "Inconnu" }}</p>
+      <p>Nombre de frères/soeurs/épouse/époux à bord : {{ passenger.SibSp ? passenger.SibSp : "Inconnu" }}</p>
+      <p>Nombre de parents/enfants à bord : {{ passenger.Parch ? passenger.Parch : "Inconnu" }}</p>
+      <p>Numéro de ticket : {{ passenger.Ticket ? passenger.Ticket : "Inconnu" }}</p>
+      <p>Tarif : {{ passenger.Fare ? passenger.Fare : "Inconnu" }}</p>
+      <p>
+        Numéro de cabine : {{ passenger.Cabin ? passenger.Cabin : "Inconnu" }}
+      </p>
+      <p>
+        Port d'embarquement : {{ passenger.Embarked ? passenger.Embarked : "Inconnu" }}
+      </p>
+    </div>
+  </div>
 </ng-container>

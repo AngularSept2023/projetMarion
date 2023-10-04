@@ -1,1 +1,97 @@
-<p>statistiques works!</p>
+<h2>Statistiques</h2>
+
+<mat-form-field appearance="outline">
+  <mat-label>Filter by name</mat-label>
+  <input matInput (keyup)="applyFilter($event)" placeholder="Name" #input />
+</mat-form-field>
+<mat-form [formGroup]="criteresForm">
+  <!-- Critère de sexe -->
+  <label for="all"
+    >Tous
+    <input type="radio" name="sex" value="all" formControlName="sex" />
+  </label>
+  <label for="female">
+    Femme <input type="radio" name="sex" value="female" formControlName="sex" />
+  </label>
+  <label for="male">
+    Homme
+    <input type="radio" name="sex" value="male" formControlName="sex" />
+  </label>
+
+  <!-- Critère d'âge -->
+  <mat-label>Fourchette d'âge</mat-label>
+  <mat-slider min="0" max="100">
+    <input
+      name="age"
+      title="ageMin"
+      value="0"
+      matSliderStartThumb
+      formControlName="ageMin"
+    />
+    <input
+      name="age"
+      title="ageMax"
+      value="100"
+      matSliderEndThumb
+      formControlName="ageMax"
+    />
+  </mat-slider>
+
+  <!-- Critère survivant -->
+  <label for="all"
+    >Tous
+    <input
+      type="radio"
+      name="survived"
+      value="all"
+      formControlName="survived"
+    />
+  </label>
+  <label for="survivant"
+    >Survivant.e
+    <input
+      type="radio"
+      name="survived"
+      value="survivant"
+      formControlName="survived"
+    />
+  </label>
+  <label for="mort">
+    Mort.e
+    <input
+      type="radio"
+      name="survived"
+      value="mort"
+      formControlName="survived"
+    />
+  </label>
+</mat-form>
+
+<mat-table [dataSource]="passengersTab">
+  <ng-container matColumnDef="Nom">
+    <th mat-header-cell *matHeaderCellDef>Nom</th>
+    <td mat-cell *matCellDef="let passenger">
+      <a [routerLink]="['./', passenger.PassengerId]">{{ passenger.Name }}</a>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="Sexe">
+    <th mat-header-cell *matHeaderCellDef>Sexe</th>
+    <td mat-cell *matCellDef="let passenger">
+      {{ passenger.Sex }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="Âge">
+    <th mat-header-cell *matHeaderCellDef>Âge</th>
+    <td mat-cell *matCellDef="let passenger">
+      {{ passenger.Age ? passenger.Age : "Âge inconnu" }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="Survivant">
+    <th mat-header-cell *matHeaderCellDef>Survivant</th>
+    <td mat-cell *matCellDef="let passenger">
+      {{ passenger.Survived === "1" ? "Oui" : "Non" }}
+    </td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</mat-table>

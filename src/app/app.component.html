@@ -1,19 +1,29 @@
-<h1>Titanic</h1>
-<mat-toolbar>
-  <a
-    mat-flat-button
-    color="primary"
-    routerLink="/passengers"
-    routerLinkActive="active"
-    >Liste des passagers</a
-  >
-  <a
-    mat-flat-button
-    color="primary"
-    routerLink="/stats"
-    routerLinkActive="active"
-    >Statistiques</a
-  >
-</mat-toolbar>
+<header>
+  <div class="relative">
+    <div class="headbackcolor"></div>
+    <div class="headimg"></div>
+    <h1>Titanic</h1>
+  </div>
 
-<router-outlet></router-outlet>
+  <mat-toolbar>
+    <div class="container">
+      <a
+        mat-flat-button
+        color="primary"
+        routerLink="/passengers"
+        routerLinkActive="active"
+        >Liste des passagers</a
+      >
+      <a
+        mat-flat-button
+        color="primary"
+        routerLink="/stats"
+        routerLinkActive="active"
+        >Statistiques</a
+      >
+    </div>
+  </mat-toolbar>
+</header>
+<div class="container">
+  <router-outlet></router-outlet>
+</div>
