@@ -1,20 +1,20 @@
 <ng-container *ngIf="passenger$ | async as passenger">
   <div class="passengerInfos">
-    <h2>Passager : {{ passenger.PassengerId }} - {{ passenger.Name }}</h2>
-    <p>Âge : {{ passenger.Age ? passenger.Age + " ans" : "Âge inconnu" }}</p>
-    <p>Sexe : {{ passenger.Sex }}</p>
-    <p>Survivant : {{ passenger.Survived === "1" ? "Oui" : "Non" }}</p>
+    <h2>Passager : {{ passenger[0].PassengerId }} - {{ passenger[0].Name }}</h2>
+    <p>Âge : {{ passenger[0].Age ? passenger[0].Age + " ans" : "Âge inconnu" }}</p>
+    <p>Sexe : {{ passenger[0].Sex }}</p>
+    <p>Survivant : {{ passenger[0].Survived === "1" ? "Oui" : "Non" }}</p>
     <div class="passengerInfosDetails">
-      <p>Classe : {{ passenger.Pclass ? passenger.Pclass : "Inconnu" }}</p>
-      <p>Nombre de frères/soeurs/épouse/époux à bord : {{ passenger.SibSp ? passenger.SibSp : "Inconnu" }}</p>
-      <p>Nombre de parents/enfants à bord : {{ passenger.Parch ? passenger.Parch : "Inconnu" }}</p>
-      <p>Numéro de ticket : {{ passenger.Ticket ? passenger.Ticket : "Inconnu" }}</p>
-      <p>Tarif : {{ passenger.Fare ? passenger.Fare : "Inconnu" }}</p>
+      <p>Classe : {{ passenger[0].Pclass ? passenger[0].Pclass : "Inconnu" }}</p>
+      <p>Nombre de frères/soeurs/épouse/époux à bord : {{ passenger[0].SibSp ? passenger[0].SibSp : "Inconnu" }}</p>
+      <p>Nombre de parents/enfants à bord : {{ passenger[0].Parch ? passenger[0].Parch : "Inconnu" }}</p>
+      <p>Numéro de ticket : {{ passenger[0].Ticket ? passenger[0].Ticket : "Inconnu" }}</p>
+      <p>Tarif : {{ passenger[0].Fare ? passenger[0].Fare : "Inconnu" }}</p>
       <p>
-        Numéro de cabine : {{ passenger.Cabin ? passenger.Cabin : "Inconnu" }}
+        Numéro de cabine : {{ passenger[0].Cabin ? passenger[0].Cabin : "Inconnu" }}
       </p>
       <p>
-        Port d'embarquement : {{ passenger.Embarked ? passenger.Embarked : "Inconnu" }}
+        Port d'embarquement : {{ passenger[0].Embarked ? passenger[0].Embarked : "Inconnu" }}
       </p>
     </div>
   </div>

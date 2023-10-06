@@ -1,0 +1,70 @@
+<div class="container">
+  <form [formGroup]="inscriptionForm" (ngSubmit)="submitForm()">
+    <mat-form-field>
+      <label>
+        <input
+          type="name"
+          placeholder="Nom"
+          formControlName="name"
+          matInput
+          required
+        />
+      </label>
+    </mat-form-field>
+
+    <mat-form-field>
+      <label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          formControlName="birthday"
+          required
+          readonly="true"
+          placeholder="jj/mm/aaaa"
+        />
+      </label>
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <label>
+        <input
+          type="identifiant"
+          placeholder="Email"
+          formControlName="identifiant"
+          matInput
+          required
+        />
+      </label>
+    </mat-form-field>
+
+    <mat-form-field>
+      <label>
+        <input
+          type="password"
+          placeholder="Password"
+          formControlName="password"
+          matInput
+          required
+          (keydown.enter)="submitForm()"
+        />
+      </label>
+    </mat-form-field>
+
+    <button
+      mat-raised-button
+      type="submit"
+      color="primary"
+      [disabled]="inscriptionForm.invalid"
+    >
+      Login
+    </button>
+  </form>
+  <div *ngIf="showError">
+    <mat-error class="msg-error"> {{ msgError }} </mat-error>
+  </div>
+</div>

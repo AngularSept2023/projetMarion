@@ -1,15 +1,12 @@
-import { Component, OnInit, forwardRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Passenger } from 'src/app/models/titanic-model';
 import { TitanicService } from '../titanic.service';
 import {
   FormGroup,
   FormControl,
   Validators,
-  NG_VALUE_ACCESSOR,
-  ControlValueAccessor,
 } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
-import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-statistiques',
@@ -19,6 +16,10 @@ import { tap } from 'rxjs';
 export class StatistiquesComponent implements OnInit {
   passengers!: Passenger[];
   passengersFiltered!: Passenger[];
+  sexFilter!: Passenger[];
+  nameFilter!: Passenger[];
+  ageFilter!: Passenger[];
+  survivedFilter!: Passenger[];
   passengersTab!: MatTableDataSource<Passenger>;
   displayedColumns = ['Nom', 'Sexe', 'Âge', 'Survivant'];
   criteresForm!: FormGroup;
@@ -26,7 +27,10 @@ export class StatistiquesComponent implements OnInit {
   constructor(private titanicService: TitanicService) {
     this.titanicService.getPassengers().subscribe((passengers) => {
       this.passengers = passengers;
-      this.passengersFiltered = passengers;
+      this.nameFilter = this.passengers;
+      this.sexFilter = this.passengers;
+      this.ageFilter = this.passengers;
+      this.survivedFilter = this.passengers;
       this.passengersTab = new MatTableDataSource(passengers);
     });
   }
@@ -38,7 +42,7 @@ export class StatistiquesComponent implements OnInit {
     this.handleSurvivedCritere();
   }
 
-  private initCriteresForm() {
+  private initCriteresForm(): void {
     this.criteresForm = new FormGroup({
       sex: new FormControl('all', Validators.required),
       ageMin: new FormControl(0),
@@ -47,88 +51,99 @@ export class StatistiquesComponent implements OnInit {
     });
   }
 
-  private handleSexCritere() {
+  private handleSexCritere(): void {
     this.criteresForm.controls['sex'].valueChanges.subscribe((value) => {
       switch (value) {
         case 'all':
-          this.passengersFiltered = this.passengers;
-          this.passengersTab = new MatTableDataSource(this.passengersFiltered);
+          this.sexFilter = this.passengers;
+          this.updateTable();
           break;
         case 'female':
-          this.passengersFiltered = this.passengers.filter(
+          this.sexFilter = this.passengers.filter(
             (passenger) => passenger.Sex === 'female'
           );
-          this.passengersTab = new MatTableDataSource(this.passengersFiltered);
+          this.updateTable();
           break;
         case 'male':
-          this.passengersFiltered = this.passengers.filter(
+          this.sexFilter = this.passengers.filter(
             (passenger) => passenger.Sex === 'male'
           );
-          this.passengersTab = new MatTableDataSource(this.passengersFiltered);
+          this.updateTable();
           break;
         default:
-          this.passengersFiltered = this.passengers;
-          this.passengersTab = new MatTableDataSource(this.passengersFiltered);
+          this.sexFilter = this.passengers;
+          this.updateTable();
           break;
       }
-      console.log(this.passengersFiltered);
     });
   }
 
-  private handleAgeCritere() {
+  private handleAgeCritere(): void {
     this.criteresForm.controls['ageMin'].valueChanges.subscribe((value) => {
-      this.passengersFiltered = this.passengers.filter(
+      this.ageFilter = this.passengers.filter(
         (passenger) => passenger.Age && passenger.Age >= value
       );
-      this.passengersTab = new MatTableDataSource(this.passengersFiltered);
-      console.log(this.passengersFiltered);
+      this.updateTable();
     });
     this.criteresForm.controls['ageMax'].valueChanges.subscribe((value) => {
-      this.passengersFiltered = this.passengers.filter(
+      this.ageFilter = this.passengers.filter(
         (passenger) => passenger.Age && passenger.Age <= value
       );
-      this.passengersTab = new MatTableDataSource(this.passengersFiltered);
-      console.log(this.passengersFiltered);
+      this.updateTable();
     });
   }
 
-  private handleSurvivedCritere() {
+  private handleSurvivedCritere(): void {
     this.criteresForm.controls['survived'].valueChanges.subscribe((value) => {
       switch (value) {
         case 'all':
-          this.passengersFiltered = this.passengers;
-          this.passengersTab = new MatTableDataSource(this.passengersFiltered);
+          this.survivedFilter = this.passengers;
+          this.updateTable();
           break;
         case 'survivant':
-          this.passengersFiltered = this.passengers.filter(
+          this.survivedFilter = this.passengers.filter(
             (passenger) => passenger.Survived === '1'
           );
-          this.passengersTab = new MatTableDataSource(this.passengersFiltered);
+          this.updateTable();
           break;
         case 'mort':
-          this.passengersFiltered = this.passengers.filter(
+          this.survivedFilter = this.passengers.filter(
             (passenger) => passenger.Survived === '0'
           );
-          this.passengersTab = new MatTableDataSource(this.passengersFiltered);
+          this.updateTable();
           break;
         default:
-          this.passengersFiltered = this.passengers;
-          this.passengersTab = new MatTableDataSource(this.passengersFiltered);
+          this.survivedFilter = this.passengers;
+          this.updateTable();
           break;
       }
-      console.log(this.passengersFiltered);
     });
+  }
+
+  private updateTable(): void {
+    this.passengersFiltered = this.passengers?.filter(
+      (passenger) =>
+        this.sexFilter.includes(passenger) &&
+        this.ageFilter.includes(passenger) &&
+        this.survivedFilter.includes(passenger) &&
+        this.nameFilter.includes(passenger)
+    );
+    this.passengersTab = new MatTableDataSource(this.passengersFiltered);
   }
 
   /**
    * Filtre le tableau par nom via la value d'un input
    * @param event
    */
-  public applyFilter(event: Event) {
+  public applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.passengersTab.filter = filterValue.trim().toLowerCase();
-    if (this.passengersTab.paginator) {
-      this.passengersTab.paginator.firstPage();
-    }
+    this.nameFilter = this.passengers.filter((passenger) =>
+      ((passenger.Name).toLowerCase()).includes(filterValue.trim().toLowerCase())
+    );
+    this.updateTable();
+    // this.passengersTab.filter = filterValue.trim().toLowerCase();
+    // if (this.passengersTab.paginator) {
+    //   this.passengersTab.paginator.firstPage();
+    // }
   }
 }

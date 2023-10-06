@@ -12,18 +12,12 @@ export class TitanicService {
   constructor(private http: HttpClient) {}
 
   getPassengers(): Observable<Passenger[]> {
-    return this.http
-      .get<Passenger[]>(`${this.baseUrl}/passengers`)
-      .pipe(map((passengers) => {
-        return passengers;
-      }));
+    return this.http.get<Passenger[]>(`${this.baseUrl}/passengers`);
   }
 
   getPassenger(id: number): Observable<Passenger[]> {
-    return this.http
-      .get<Passenger[]>(`${this.baseUrl}/passengers?PassengerId=${id}`)
-      .pipe((passenger) => {
-        return passenger;
-      });
+    return this.http.get<Passenger[]>(
+      `${this.baseUrl}/passengers?PassengerId=${id}`
+    );
   }
 }

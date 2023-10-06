@@ -19,6 +19,9 @@ import { MatSortModule } from '@angular/material/sort';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSliderModule } from '@angular/material/slider';
+import { HomeComponent } from './modules/home/home.component';
+import { LoginComponent } from './modules/authentification/login/login.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -27,6 +30,7 @@ import { MatSliderModule } from '@angular/material/slider';
     StatistiquesComponent,
     PageNotFoundComponent,
     PassengersDetailsComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,6 +47,8 @@ import { MatSliderModule } from '@angular/material/slider';
     MatSortModule,
     MatRadioModule,
     MatSliderModule,
+    LoginComponent,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -26,6 +26,7 @@ export class PassengersService {
   public getPassenger(id: number) {
     this.titanicService.getPassenger(id).subscribe((value) => {
       this.passenger.next(value[0]);
+      return value;
     });
   }
 }

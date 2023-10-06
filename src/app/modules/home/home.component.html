@@ -1,0 +1,13 @@
+<div>
+  <div *ngIf="!isLogged">
+    <h1>Connexion</h1>
+    <app-login></app-login>
+    <p>
+      Pas encore inscrit ? Veuillez vous inscrire
+      <a routerLink="/inscription" routerLinkActive="">ici</a>
+    </p>
+  </div>
+  <div *ngIf="isLogged">
+    <h1>Accueil</h1>
+  </div>
+</div>

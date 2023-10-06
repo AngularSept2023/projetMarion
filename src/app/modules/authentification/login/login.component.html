@@ -1,0 +1,40 @@
+<div class="container">
+  <form [formGroup]="loginForm" (ngSubmit)="submitForm()">
+    <mat-form-field>
+      <label>
+        <input
+          type="identifiant"
+          placeholder="Identifiant"
+          formControlName="identifiant"
+          matInput
+          required
+        />
+      </label>
+    </mat-form-field>
+
+    <mat-form-field>
+      <label>
+        <input
+          type="password"
+          placeholder="Password"
+          formControlName="password"
+          matInput
+          required
+          (keydown.enter)="submitForm()"
+        />
+      </label>
+    </mat-form-field>
+
+    <button
+      mat-raised-button
+      type="submit"
+      color="primary"
+      [disabled]="loginForm.invalid"
+    >
+      Login
+    </button>
+  </form>
+  <div *ngIf="showError">
+    <mat-error class="msg-error"> {{ msgError }} </mat-error>
+  </div>
+</div>

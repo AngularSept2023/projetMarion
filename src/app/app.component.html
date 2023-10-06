@@ -2,11 +2,14 @@
   <div class="relative">
     <div class="headbackcolor"></div>
     <div class="headimg"></div>
-    <h1>Titanic</h1>
   </div>
+  <h1><a routerLink="/home" routerLinkActive>Titanic</a></h1>
 
   <mat-toolbar>
     <div class="container">
+      <a routerLink="/home" routerLinkActive
+        ><mat-icon fontIcon="home">home</mat-icon></a
+      >
       <a
         mat-flat-button
         color="primary"
@@ -21,6 +24,25 @@
         routerLinkActive="active"
         >Statistiques</a
       >
+      <div>
+        <button
+          type="button"
+          mat-button
+          *ngIf="!isLogged"
+          routerLink="/home"
+          routerLinkActive
+        >
+          Connexion
+        </button>
+        <button
+          type="button"
+          mat-button
+          *ngIf="isLogged"
+          (click)="authService.logout()"
+        >
+          Déconnexion
+        </button>
+      </div>
     </div>
   </mat-toolbar>
 </header>
